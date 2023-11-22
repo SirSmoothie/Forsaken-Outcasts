@@ -1,12 +1,14 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public CharacterModel characterModel;
     public PlayerInput playerInput;
     public void Start()
     {
+        if (!IsOwner) return;
         //playerInput.actions.FindAction("Jump").performed += aContext => characterModel.Jump();
         //playerInput.actions.FindAction("Interact").performed += aContext => characterModel.Interact();
         
