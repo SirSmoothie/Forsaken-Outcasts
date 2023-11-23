@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterModel : MonoBehaviour
+public class CharacterModel : NetworkBehaviour
 {
     private Vector2 movementDirection;
     public Rigidbody rb;
@@ -16,12 +17,14 @@ public class CharacterModel : MonoBehaviour
 
     private void Start()
     {
+        if (!IsOwner) return;
         viewRoation = Camera.transform.localRotation;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
-    {
+    { 
+        if (!IsOwner) return;
        Vector3 movementDirectionFinal = new Vector3(movementDirection.x, 0, movementDirection.y);
        rb.AddRelativeForce(movementDirectionFinal * speed, ForceMode.Acceleration);
 
