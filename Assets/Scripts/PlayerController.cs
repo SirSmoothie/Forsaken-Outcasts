@@ -17,6 +17,8 @@ public class PlayerController : NetworkBehaviour
 
         playerInput.actions.FindAction("CameraMovement").performed += OnCamMovementOnperformed;
         playerInput.actions.FindAction("CameraMovement").canceled += OnCamMovementOnperformed;
+        
+        playerInput.actions.FindAction("Jump").performed += aContext => characterModel.Jump();
     }
 
     private void OnMovementOnperformed(InputAction.CallbackContext aContext)

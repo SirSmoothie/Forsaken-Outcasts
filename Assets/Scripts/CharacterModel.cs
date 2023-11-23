@@ -14,6 +14,9 @@ public class CharacterModel : NetworkBehaviour
     public float MinCamHeight = -60;
     public float cameraLookSpeed = 1;
     public float speed;
+    private bool onGround;
+    public float jumpHeight;
+    public float onGroundDrag;
 
     private void Start()
     {
@@ -25,6 +28,18 @@ public class CharacterModel : NetworkBehaviour
     private void FixedUpdate()
     { 
         if (!IsOwner) return;
+        if (!onGround)
+        {
+            //We want to move in air
+            //rb.drag = 0f;
+        }
+        else
+        {
+            rb.drag = onGroundDrag;
+        }
+        
+        
+        
        Vector3 movementDirectionFinal = new Vector3(movementDirection.x, 0, movementDirection.y);
        rb.AddRelativeForce(movementDirectionFinal * speed, ForceMode.Acceleration);
 
@@ -42,5 +57,29 @@ public class CharacterModel : NetworkBehaviour
     {
         viewRoation.x += -CamDirection.y * cameraLookSpeed;
         viewRoation.y += CamDirection.x * cameraLookSpeed;
+    }
+
+    public void Jump()
+    {
+        if (!onGround)
+            return;
+
+        //rb.drag = 0f;
+        rb.AddForce(0, jumpHeight, 0, ForceMode.VelocityChange);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        onGround = true;
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        onGround = false;
+    }
+    
+    private void OnCollisionStay(Collision other)
+    {
+        onGround = true;
     }
 }
