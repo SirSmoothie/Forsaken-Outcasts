@@ -14,6 +14,9 @@ public class PlayerController : NetworkBehaviour
         
         playerInput.actions.FindAction("Movement").performed += OnMovementOnperformed;
         playerInput.actions.FindAction("Movement").canceled += OnMovementOnperformed;
+
+        playerInput.actions.FindAction("CameraMovement").performed += OnCamMovementOnperformed;
+        playerInput.actions.FindAction("CameraMovement").canceled += OnCamMovementOnperformed;
     }
 
     private void OnMovementOnperformed(InputAction.CallbackContext aContext)
@@ -25,6 +28,18 @@ public class PlayerController : NetworkBehaviour
         if (aContext.phase == InputActionPhase.Canceled)
         {
             characterModel.MoveDirection(Vector2.zero);
+        }
+    }
+    
+    private void OnCamMovementOnperformed(InputAction.CallbackContext aContext)
+    {
+        if (aContext.phase == InputActionPhase.Performed)
+        {
+            characterModel.CamDirection(aContext.ReadValue<Vector2>());
+        }
+        if (aContext.phase == InputActionPhase.Canceled)
+        {
+            characterModel.CamDirection(Vector2.zero);
         }
     }
 }
