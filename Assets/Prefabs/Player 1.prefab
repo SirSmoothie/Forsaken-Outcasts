@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 256052922
+  GlobalObjectIdHash: 3041184370
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   speed: 5
   jumpHeight: 5
   onGroundDrag: 1
-  playerReach: 10
+  playerReach: 1.5
   interactRayOffset: {x: 0, y: 0.5, z: 0}
 --- !u!54 &3899762669869149033
 Rigidbody:
@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 256052922
+  GlobalObjectIdHash: 1344991576
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
