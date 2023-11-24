@@ -9,6 +9,8 @@ public class CharacterModel : NetworkBehaviour
     private Vector2 movementDirection;
     public Rigidbody rb;
     public Transform Camera;
+    public GameObject HandsSlot;
+    private bool holdingObject;
     private Quaternion viewRoation;
     public float MaxCamHeight = 60;
     public float MinCamHeight = -60;
@@ -17,7 +19,10 @@ public class CharacterModel : NetworkBehaviour
     private bool onGround;
     public float jumpHeight;
     public float onGroundDrag;
+    public float playerReach;
+    public Vector3 interactRayOffset = new Vector3(0,0.5f,0);
 
+    private GameObject Whatyoupickedup;
     private void Start()
     {
         if (!IsOwner) return;
@@ -66,6 +71,44 @@ public class CharacterModel : NetworkBehaviour
 
         //rb.drag = 0f;
         rb.AddForce(0, jumpHeight, 0, ForceMode.VelocityChange);
+    }
+
+    public void Interact()
+    {
+        RaycastHit hit = CheckWhatsInFront();
+       
+        
+        if (holdingObject)
+        {
+            IPickupable pickup = Whatyoupickedup.transform.GetComponent<IPickupable>();
+            pickup?.Drop();
+            holdingObject = false;
+        }
+        else
+        {
+            IPickupable pickup = hit.transform.GetComponent<IPickupable>();
+            pickup?.Pickup(gameObject, HandsSlot);
+            Whatyoupickedup = hit.transform.gameObject;
+            holdingObject = true;
+        }
+    }
+
+    public RaycastHit CheckWhatsInFront()
+    {
+        // Check what's in front of me. TODO: Make it scan the area or something less precise
+        RaycastHit hit;
+        // Ray        ray = new Ray(transform.position + transform.TransformPoint(interactRayOffset), transform.forward);
+        // NOTE: TransformPoint I THINK includes the main position, so you don't have to add world position to the final
+        Vector3 transformPoint = transform.TransformPoint(interactRayOffset);
+        // Debug.Log(transformPoint);
+        Ray ray = new Ray(transformPoint, Camera.forward);
+
+        Debug.DrawRay(ray.origin, ray.direction * playerReach, Color.green, 2f);
+
+        // if (Physics.Raycast(ray, out hit, interactDistance))
+        Physics.SphereCast(ray, 0.5f, out hit, playerReach);
+
+        return hit;
     }
 
     private void OnCollisionEnter(Collision other)
