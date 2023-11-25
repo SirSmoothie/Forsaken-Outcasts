@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class PickupModule : NetworkBehaviour, IPickupable
 {
+    
     public void Pickup(GameObject WhoIsPickingItUp, GameObject WhereToParentItOn)
     {
-        transform.parent = WhereToParentItOn.transform;
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
-        transform.position = WhereToParentItOn.transform.position;
-        transform.rotation = WhereToParentItOn.transform.rotation;
+        FollowTransform target = transform.GetComponent<FollowTransform>();
+        target.SetTargetTransform(WhereToParentItOn.transform);
     }
 
     public void Drop()
     {
-        transform.parent = null;
+        FollowTransform target = transform.GetComponent<FollowTransform>();
+        target.SetTargetTransform(null);
         GetComponent<Collider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
     }

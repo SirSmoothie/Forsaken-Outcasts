@@ -12,6 +12,7 @@ public class CharacterModel : NetworkBehaviour
     public GameObject HandsSlot;
     private bool holdingObject;
     private Quaternion viewRoation;
+    public NetworkObjectList objectList;
     public float MaxCamHeight = 60;
     public float MinCamHeight = -60;
     public float cameraLookSpeed = 1;
