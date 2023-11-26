@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObject/NetworkObjectList", order = 1)]
 public class NetworkObjectList : ScriptableObject
 {
-    public GameObject[] ItemPrefabs;
+    public List<PickupModule> PickupItemPrefabs;
 }

@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CharacterModel : NetworkBehaviour
+public class CharacterModel : NetworkBehaviour, IPickupParent
 {
     private Vector2 movementDirection;
     public Rigidbody rb;
@@ -23,6 +23,7 @@ public class CharacterModel : NetworkBehaviour
     public float onGroundDrag;
     public float playerReach;
     public Vector3 interactRayOffset = new Vector3(0,0.5f,0);
+    public GameObject CurrentObject;
 
     private GameObject Whatyoupickedup;
     private void Start()
@@ -89,7 +90,7 @@ public class CharacterModel : NetworkBehaviour
         else
         {
             IPickupable pickup = hit.transform.GetComponent<IPickupable>();
-            pickup?.Pickup(gameObject, HandsSlot);
+            pickup?.Pickup(gameObject, gameObject);
             Whatyoupickedup = hit.transform.gameObject;
             holdingObject = true;
         }
@@ -97,15 +98,17 @@ public class CharacterModel : NetworkBehaviour
     
     public void SpawnItemInHand(int Value)
     {
-        var item = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, HandsSlot.transform);
-        item.GetComponent<NetworkObject>().Spawn();
+        //var item = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, HandsSlot.transform);
+        //item.GetComponent<NetworkObject>().Spawn();
+        
+        
     }
     
     public void SpawnItemOutOfHand(int Value)                                                                                                    
     {                                                                                                                                         
-        var itemdrop = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, null);
-        itemdrop.GetComponent<NetworkObject>().Spawn();
-        itemdrop.GetComponent<Rigidbody>().isKinematic = false;
+        //var itemdrop = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, null);
+        //itemdrop.GetComponent<NetworkObject>().Spawn();
+        //itemdrop.GetComponent<Rigidbody>().isKinematic = false;
     }                                                                                                                                         
     public RaycastHit CheckWhatsInFront()
     {
@@ -138,5 +141,20 @@ public class CharacterModel : NetworkBehaviour
     private void OnCollisionStay(Collision other)
     {
         onGround = true;
+    }
+
+    public NetworkObject GetNetworkObject()
+    {
+        return NetworkObject;
+    }
+
+    public void SetItemObject(PickupModule gameObject)
+    {
+        CurrentObject = gameObject.gameObject;
+    }
+
+    public Transform GetItemObjectFollowTransform()
+    {
+        return HandsSlot.transform;
     }
 }
