@@ -11,7 +11,7 @@ public class CharacterModel : NetworkBehaviour
     public Rigidbody rb;
     public Transform Camera;
     public GameObject HandsSlot;
-    private bool holdingObject;
+    public bool holdingObject;
     private Quaternion viewRoation;
     public NetworkObjectList objectList;
     public float MaxCamHeight = 60;
@@ -34,7 +34,7 @@ public class CharacterModel : NetworkBehaviour
 
     private void FixedUpdate()
     { 
-        //if (!IsOwner) return;
+        if (!IsOwner) return;
         if (!onGround)
         {
             //We want to move in air
@@ -82,10 +82,8 @@ public class CharacterModel : NetworkBehaviour
         
         if (holdingObject)
         {
-            //IPickupable pickup = Whatyoupickedup.transform.GetComponent<IPickupable>();
-            //pickup?.Drop();
-            //holdingObject = false;
-            HandsSlot.GetComponentInChildren<IPickupable>().Drop(gameObject);
+            IPickupable pickup = Whatyoupickedup.transform.GetComponent<IPickupable>();
+            pickup?.Drop(gameObject);
             holdingObject = false;
         }
         else

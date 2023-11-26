@@ -16,7 +16,7 @@ public class PickupModule : NetworkBehaviour, IPickupable
         //^ old pickup method
         
         WhoIsPickingItUp.GetComponent<CharacterModel>().SpawnItemInHand(PickupItemIndex);
-        gameObject.SetActive(false);
+        NetworkObject.gameObject.SetActive(false);
     }
 
     public void Drop(GameObject WhoIsDroppingIt)
