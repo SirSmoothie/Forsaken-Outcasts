@@ -6,5 +6,5 @@ public interface IPickupable
 {
     public void Pickup(GameObject WhoIsPickingItUp, GameObject WhereToParentItOn);
 
-    public void Drop();
+    public void Drop(GameObject WhoIsDroppingIt);
 }

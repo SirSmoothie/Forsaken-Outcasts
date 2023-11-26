@@ -2084,6 +2084,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Orb
       objectReference: {fileID: 0}
+    - target: {fileID: 8092449194960180220, guid: 3ace84dd92a502441aa0424d6eabd930, type: 3}
+      propertyPath: PickupItemIndex
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

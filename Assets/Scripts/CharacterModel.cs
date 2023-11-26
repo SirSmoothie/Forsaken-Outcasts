@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ public class CharacterModel : NetworkBehaviour
 
     private void FixedUpdate()
     { 
-        if (!IsOwner) return;
+        //if (!IsOwner) return;
         if (!onGround)
         {
             //We want to move in air
@@ -81,8 +82,10 @@ public class CharacterModel : NetworkBehaviour
         
         if (holdingObject)
         {
-            IPickupable pickup = Whatyoupickedup.transform.GetComponent<IPickupable>();
-            pickup?.Drop();
+            //IPickupable pickup = Whatyoupickedup.transform.GetComponent<IPickupable>();
+            //pickup?.Drop();
+            //holdingObject = false;
+            HandsSlot.GetComponentInChildren<IPickupable>().Drop(gameObject);
             holdingObject = false;
         }
         else
@@ -93,7 +96,19 @@ public class CharacterModel : NetworkBehaviour
             holdingObject = true;
         }
     }
-
+    
+    public void SpawnItemInHand(int Value)
+    {
+        var item = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, HandsSlot.transform);
+        item.GetComponent<NetworkObject>().Spawn();
+    }
+    
+    public void SpawnItemOutOfHand(int Value)                                                                                                    
+    {                                                                                                                                         
+        var itemdrop = Instantiate(objectList.ItemPrefabs[Value], HandsSlot.transform.position, quaternion.identity, null);
+        itemdrop.GetComponent<NetworkObject>().Spawn();
+        itemdrop.GetComponent<Rigidbody>().isKinematic = false;
+    }                                                                                                                                         
     public RaycastHit CheckWhatsInFront()
     {
         // Check what's in front of me. TODO: Make it scan the area or something less precise
